@@ -1,27 +1,52 @@
-let startTime;
-let endTime;
+let testText = document.getElementById('test-text').innerText;
+let inputText = document.getElementById('input-text');
+let timerDisplay = document.getElementById('timer');
+let wpmDisplay = document.getElementById('wpm');
+let startButton = document.getElementById('start-button');
+let startTime = 0;
+let endTime = 0;
+let interval;
+let wordCount = 0;
 
-const textarea = document.getElementById('textarea');
-const wpmDisplay = document.getElementById('wpm');
-const submitButton = document.getElementById('submit-button');
+function startTest() {
+    inputText.disabled = false;
+    inputText.value = '';
+    inputText.focus();
+    wordCount = 0;
+    wpmDisplay.innerText = 'WPM: 0';
+    startButton.disabled = true;
 
-textarea.addEventListener('focus', () => {
-    // Start timer when user starts typing
-    if (!startTime) {
-        startTime = new Date();
+    startTime = Date.now();
+    interval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+    let elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+    timerDisplay.innerText = 'Time: ' + elapsedTime + 's';
+
+    if (elapsedTime >= 60) {
+        clearInterval(interval);
+        inputText.disabled = true;
+        calculateWPM();
     }
-});
+}
 
-submitButton.addEventListener('click', () => {
-    // Stop the timer when user finishes typing
-    endTime = new Date();
-    const timeElapsed = (endTime - startTime) / 1000;  // Time in seconds
-    const text = textarea.value.trim();
-    const wordCount = text.split(/\s+/).length;  // Count words
-    const wpm = Math.floor((wordCount / timeElapsed) * 60);  // Calculate WPM
-    wpmDisplay.textContent = `WPM: ${wpm}`;
-    
-    // Disable the textarea after submission
-    textarea.disabled = true;
-    submitButton.disabled = true;
-});
+function checkText() {
+    let userText = inputText.value;
+    let wordsTyped = userText.trim().split(/\s+/).length;
+
+    if (userText === testText) {
+        inputText.disabled = true;
+        endTime = Date.now();
+        clearInterval(interval);
+        calculateWPM();
+    }
+}
+
+function calculateWPM() {
+    let elapsedTime = (endTime - startTime) / 1000; // time in seconds
+    let wordsTyped = inputText.value.trim().split(/\s+/).length;
+    let wpm = Math.floor((wordsTyped / elapsedTime) * 60);
+    wpmDisplay.innerText = 'WPM: ' + wpm;
+    startButton.disabled = false;
+}
