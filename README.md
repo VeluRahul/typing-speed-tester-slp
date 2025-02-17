@@ -1,6 +1,6 @@
 # Typing Speed Tester
 
-## Issues to Fix:
+## Issues had been Fixed:
 1. **Incorrect WPM calculation** – Time tracking is not accurate.
 2. **Textarea does not disable** – Even after completing the test, users can keep typing.
 3. **UI responsiveness issues** – The layout is broken on mobile screens.
