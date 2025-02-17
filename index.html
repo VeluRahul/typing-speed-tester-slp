@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Typing Speed Tester</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typing Speed Test</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Typing Speed Tester</h1>
-        <p id="textToType">Click 'Start' to begin the test.</p>
-        <textarea id="typingArea" placeholder="Start typing here..." disabled></textarea>
-        <button onclick="startTest()">Start</button>
-        <button onclick="restartTest()">Restart</button>
-        <p id="result"></p>
+  <div class="container">
+    <h1>Typing Speed Test</h1>
+    <p>Type the text below as fast as you can!</p>
+    <div class="text-container">
+      <p id="text-to-type">The quick brown fox jumps over the lazy dog.</p>
     </div>
-    
-    <script src="script.js"></script>
-</body>
-</html>
+    <textarea id="user-input" placeholder="Start typing here..." rows="5"></textarea>
+    <div class="stats">
+      <p>Time: <span id="time">0
