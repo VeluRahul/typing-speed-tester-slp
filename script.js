@@ -12,7 +12,7 @@ function startTest() {
     document.getElementById("typingArea").value = "";
     document.getElementById("typingArea").disabled = false;
     document.getElementById("typingArea").focus();
-    startTime = performance.now(); // More precise timing
+    startTime = performance.now(); // Start the timer with performance.now() for better precision
 }
 
 function restartTest() {
@@ -24,23 +24,26 @@ function restartTest() {
 
 document.getElementById("typingArea").addEventListener("input", function () {
 
-    let typedText = this.value.trim(); // Fixed: TO match selectedText correctly
-    let targetText = selectedText.trim(); // Fixed: For accuracy
+    let typedText = this.value.trim(); // Trim the typed text for accuracy
+    let targetText = selectedText.trim(); // Trim the target text for accuracy
 
+    // Check if the typed text matches the target text
     if (typedText === targetText) {
-        endTime = new Date().getTime();
-        let timeTaken = (endTime - startTime) / 1000 / 60; // Fixed: Converts milliseconds to min..
+        endTime = performance.now(); // Use performance.now() to get an accurate end time
+        let timeTaken = (endTime - startTime) / 1000 / 60; // Convert milliseconds to minutes
 
-        let words = targetText.split(/\s+/).length; // Fixed: To make the word count more accurate
-        let wpm = Math.round(words / timeTaken);
+        // Calculate the number of words in the target text
+        let words = targetText.split(/\s+/).length; // Split by spaces and count the words
+        let wpm = Math.round(words / timeTaken); // Calculate WPM (words per minute)
 
-        if (timeTaken < 0.1) { // If time taken to type is too low. Made this to protect shorter text inacurracy 
+        // If the time taken is too short (under 0.1 minutes), show a "Too fast!" message
+        if (timeTaken < 0.1) {
             document.getElementById("result").innerText = `Too fast! Try again.`;
         } else {
+            // Otherwise, display the typing speed in WPM
             document.getElementById("result").innerText = `You typed at ${wpm} words per minute!`;
         }
 
-        document.getElementById("typingArea").disabled = true; // Fixed: Users cannot type after they submit
-
+        document.getElementById("typingArea").disabled = true; // Disable typing area after completion
     }
 });
