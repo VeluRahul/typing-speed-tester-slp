@@ -3,17 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Typing Speed Tester</title>
+    <title>Typing Speed Test</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Typing Speed Tester</h1>
-        <p id="textToType">Click 'Start' to begin the test.</p>
-        <textarea id="typingArea" placeholder="Start typing here..." disabled></textarea>
-        <button onclick="startTest()">Start</button>
-        <button onclick="restartTest()">Restart</button>
-        <p id="result"></p>
+        <h1>Typing Speed Test</h1>
+        <div class="test-box">
+            <p id="test-text">This is a sample text for the typing test. Try to type it as fast as you can.</p>
+            <textarea id="input-text" placeholder="Start typing here..." oninput="checkText()"></textarea>
+        </div>
+        <div class="results">
+            <p id="timer">Time: 0s</p>
+            <p id="wpm">WPM: 0</p>
+        </div>
+        <button id="start-button" onclick="startTest()">Start Test</button>
     </div>
     
     <script src="script.js"></script>
