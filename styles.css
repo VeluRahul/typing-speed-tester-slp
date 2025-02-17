@@ -1,9 +1,14 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
     text-align: center;
     background-color: #282c36;
     color: white;
     padding: 20px;
+    margin: 0;
 }
 
 .container {
@@ -21,6 +26,14 @@ textarea {
     padding: 10px;
     border: none;
     border-radius: 5px;
+    background-color: #2e3440;
+    color: white;
+    resize: none;  /* Disable resizing for better control */
+}
+
+textarea:focus {
+    outline: none;  /* Removes default focus outline */
+    border: 2px solid #5e81ac;  /* Add custom focus border */
 }
 
 button {
@@ -31,8 +44,14 @@ button {
     cursor: pointer;
     border-radius: 5px;
     margin-top: 10px;
+    transition: background-color 0.3s ease;  /* Smooth transition effect */
 }
 
 button:hover {
     background-color: #81a1c1;
+}
+
+button:focus {
+    outline: none;  /* Remove default outline */
+    box-shadow: 0 0 5px rgba(94, 129, 172, 0.7);  /* Focus effect with shadow */
 }
