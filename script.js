@@ -1,46 +1,66 @@
-const sampleTexts = [
-    "The quick brown fox jumps over the lazy dog.",
-    "Typing speed tests are fun and challenging.",
-    "Improve your typing by practicing every day."
-];
+let startButton = document.getElementById('start-button');
+let userInput = document.getElementById('user-input');
+let textToType = document.getElementById('text-to-type');
+let timeDisplay = document.getElementById('time');
+let wpmDisplay = document.getElementById('wpm');
+let timer;
+let startTime;
+let correctWords = 0;
 
-let startTime, endTime, selectedText;
+startButton.addEventListener('click', startTest);
 
 function startTest() {
-    selectedText = sampleTexts[Math.floor(Math.random() * sampleTexts.length)];
-    document.getElementById("textToType").innerText = selectedText;
-    document.getElementById("typingArea").value = "";
-    document.getElementById("typingArea").disabled = false;
-    document.getElementById("typingArea").focus();
-    startTime = performance.now(); // More precise timing
+  // Reset values
+  userInput.disabled = false;
+  userInput.value = '';
+  textToType.style.color = 'black';
+  userInput.style.backgroundColor = '#fff';
+  correctWords = 0;
+  wpmDisplay.innerText = '0';
+  timeDisplay.innerText = '0';
+  
+  startButton.disabled = true;
+  startButton.innerText = 'Test Started';
+  
+  // Start time
+  startTime = Date.now();
+  timer = setInterval(updateTime, 1000);
+
+  // Disable textarea once typing is done
+  userInput.addEventListener('input', checkInput);
 }
 
-function restartTest() {
-    document.getElementById("typingArea").value = "";
-    document.getElementById("textToType").innerText = "Click 'Start' to begin the test.";
-    document.getElementById("result").innerText = "";
-    document.getElementById("typingArea").disabled = true;
+function updateTime() {
+  const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+  timeDisplay.innerText = elapsedTime;
+  calculateWPM(elapsedTime);
 }
 
-document.getElementById("typingArea").addEventListener("input", function () {
+function checkInput() {
+  let userText = userInput.value;
+  let targetText = textToType.innerText;
 
-    let typedText = this.value.trim(); // Fixed: TO match selectedText correctly
-    let targetText = selectedText.trim(); // Fixed: For accuracy
+  // Check if the text matches up to the current input length
+  let correctText = targetText.slice(0, userText.length);
+  if (userText === correctText) {
+    textToType.style.color = 'green';
+  } else {
+    textToType.style.color = 'black';
+  }
 
-    if (typedText === targetText) {
-        endTime = new Date().getTime();
-        let timeTaken = (endTime - startTime) / 1000 / 60; // Fixed: Converts milliseconds to min..
+  // Check if the entire text is typed correctly
+  if (userText === targetText) {
+    clearInterval(timer);
+    userInput.disabled = true;
+    startButton.disabled = false;
+    startButton.innerText = 'Test Completed';
+  }
+}
 
-        let words = targetText.split(/\s+/).length; // Fixed: To make the word count more accurate
-        let wpm = Math.round(words / timeTaken);
-
-        if (timeTaken < 0.1) { // If time taken to type is too low. Made this to protect shorter text inacurracy 
-            document.getElementById("result").innerText = `Too fast! Try again.`;
-        } else {
-            document.getElementById("result").innerText = `You typed at ${wpm} words per minute!`;
-        }
-
-        document.getElementById("typingArea").disabled = true; // Fixed: Users cannot type after they submit
-
-    }
-});
+function calculateWPM(elapsedTime) {
+  let wordsTyped = userInput.value.trim().split(/\s+/).length;
+  if (elapsedTime > 0) {
+    let wpm = Math.floor((wordsTyped / elapsedTime) * 60);
+    wpmDisplay.innerText = wpm;
+  }
+}
